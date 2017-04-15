@@ -1,0 +1,54 @@
+clear;
+clc;
+bubbleposition =  'position_restart_1.txt';
+bubblevelocity =  'velocity_restart_1.txt';
+delimiterIn = ' ';
+% headerlinesIn = 4;
+V_bubble = importdata(bubblevelocity,delimiterIn);
+P_bubble = importdata(bubbleposition,delimiterIn);
+t = 1;
+x = 2;
+y = 3;
+z = 4;
+ts = (0.6-0.23)/0.000001+1;
+te = (1.2-0.23)/0.000001+1;
+figure(1);
+plot(V_bubble.data(:,t),V_bubble.data(:,z),'k-','Linewidth',1);
+set(gca, 'fontsize', 14);
+set(gca,'xtick',0.2:0.3:2.5);
+set(gca, 'XMinorTick', 'on');
+set(gca, 'YMinorTick', 'on');
+set(gca, 'LineWidth', 1);
+xlabel('Time, s', 'fontsize', 14);
+ylabel('Bubble rising velocity, Pa', 'fontsize', 14);
+axis([0.23 2.5 0 0.6]);
+print(gcf, '-dpng', '-r280', 'velocity');
+
+figure(2);
+subplot(1,2,1);
+plot(P_bubble.data(:,x)*1000,P_bubble.data(:,z)*1000,'k-','Linewidth',1);
+set(gca, 'fontsize', 12);
+set(gca,'xtick',-25:10:25);
+set(gca,'ytick',0:100:500);
+set(gca, 'XMinorTick', 'on');
+set(gca, 'YMinorTick', 'on');
+set(gca, 'LineWidth', 1);
+xlabel('X coordinate, 10^{-3}m', 'fontsize', 14);
+ylabel('Z coordinate, 10^{-3}m', 'fontsize', 14);
+axis([-25 25 0 500]);
+subplot(1,2,2);
+plot(P_bubble.data(:,y)*1000,P_bubble.data(:,z)*1000,'k-','Linewidth',1);
+set(gca, 'fontsize', 12);
+set(gca,'xtick',-25:10:25);
+set(gca,'ytick',0:100:500);
+set(gca, 'XMinorTick', 'on');
+set(gca, 'YMinorTick', 'on');
+set(gca, 'LineWidth', 1);
+xlabel('Y coordinate, 10^{-3}m', 'fontsize', 14);
+ylabel('Z coordinate, 10^{-3}m', 'fontsize', 14);
+% legend('simulation','analytical(Ergun)');
+axis([-25 25 0 500]);
+print(gcf, '-dpng', '-r280', 'trajectories');
+
+mean(V_bubble.data(ts:te,z))
+mean(max(P_bubble.data(:,z))-min(P_bubble.data(:,z)))/(max(P_bubble.data(:,t))-min(P_bubble.data(:,t)))
